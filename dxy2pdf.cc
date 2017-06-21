@@ -10,6 +10,10 @@
 #include <string>
 #include <vector>
 
+#ifdef WIN32
+#include <windows.h>
+#endif
+
 static const char *program_name = "dxy2pdf";
 
 template<typename ...Args>
@@ -230,11 +234,33 @@ void process_file(const char *ipath)
     ifile.close();
 }
 
+static const char *pick_path()
+{
+#ifdef _WIN32
+    static char buffer[PATH_MAX + 1];
+    static OPENFILENAMEA ofn;
+    ofn.lStructSize = sizeof ofn;
+    ofn.lpstrFilter = "DXY-GL files (*.A?""?)\0*.A?""?\0";
+    ofn.nFilterIndex = 1;
+    ofn.lpstrFile = buffer;
+    ofn.nMaxFile = sizeof buffer;
+    ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+    if (GetOpenFileNameA(&ofn))
+        return buffer;
+#endif
+    return nullptr;
+}
+
 int main(int argc, char **argv)
 {
     if (argc == 1) {
-        std::cerr << strfmt("Usage: %s <file>...\n", program_name);
-        return 1;
+        const char *path = pick_path();
+        if (path)
+            process_file(path);
+        else {
+            std::cerr << strfmt("Usage: %s <file>...\n", program_name);
+            return 1;
+        }
     }
     for (int i = 1; i < argc; i++)
         process_file(argv[i]);
