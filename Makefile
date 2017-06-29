@@ -3,6 +3,10 @@
 
 CXXFLAGS = -Wall -O2 -g --std=gnu++11
 
+ifneq "$(findstring -mingw,$(CXX))" ""
+LDLIBS += -lcomdlg32
+endif
+
 .PHONY: all
 all: dxy2pdf
 
