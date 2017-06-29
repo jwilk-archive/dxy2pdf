@@ -160,6 +160,8 @@ public:
     }
 };
 
+constexpr double PDF::unit;
+
 static const double a3_width = 297.0;
 static const double a3_height = 420.0;
 
