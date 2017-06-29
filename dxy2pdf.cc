@@ -113,7 +113,8 @@ public:
         this->add_op(
             "%f 0 0 %f %f %f cm",
             1 / this->unit, 1 / this->unit,
-            10 / this->unit, 10 / this->unit  // FIXME: hardcoded offset
+            10 / this->unit, 10 / this->unit
+            // TODO: make the offset configurable
         );
         this->set_pen_width(0);
     }
@@ -141,7 +142,8 @@ public:
     {
         std::string se = this->escape(s);
         this->add_op(
-            "BT /F1 4 Tf %f %f Td %s Tj ET",  // FIXME: hardcoded font-size
+            "BT /F1 4 Tf %f %f Td %s Tj ET",
+            // TODO: make the font size configurable
             this->x, this->y, se.c_str()
         );
     }
@@ -228,7 +230,6 @@ void process_file(std::istream &ifile, std::ostream &ofile)
             pdf.print_text(args);
             break;
         case 'S': // font size
-            // FIXME
             break;
         default:
             warn("command not implemented: %c", cmd);
@@ -260,6 +261,7 @@ static const char *pick_path()
     static OPENFILENAMEA ofn;
     ofn.lStructSize = sizeof ofn;
     ofn.lpstrFilter = "DXY-GL files (*.A?""?)\0*.A?""?\0";
+    // TODO: make file extension configurable
     ofn.nFilterIndex = 1;
     ofn.lpstrFile = buffer;
     ofn.nMaxFile = sizeof buffer;
