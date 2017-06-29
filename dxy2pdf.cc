@@ -40,7 +40,6 @@ class PDF
 private:
     static constexpr double unit = 25.4 / 72.0;
     std::ostream &file;
-    double width, height;
     double x, y;
     size_t offset = 0;
     std::vector<size_t> offsets;
@@ -96,7 +95,7 @@ private:
     }
 public:
     PDF(std::ostream &file, double width, double height)
-    : file(file), width(width), height(height)
+    : file(file)
     {
         this->add("%PDF-1.1\n");
         this->add_object("<< /Pages 2 0 R >>");
