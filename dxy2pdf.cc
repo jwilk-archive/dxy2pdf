@@ -223,7 +223,6 @@ void process_file(std::istream &ifile, std::ostream &ofile)
             ss >> x >> y;
             pdf.move(x * dxy_unit, y * dxy_unit);
         }
-            // FIXME
             break;
         case 'P': // print text
             pdf.print_text(args);
