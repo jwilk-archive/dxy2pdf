@@ -115,7 +115,7 @@ public:
             1 / this->unit, 1 / this->unit,
             10 / this->unit, 10 / this->unit  // FIXME: hardcoded offset
         );
-        this->add_op("%f w", 0.2); // FIXME: hardcoded line-width
+        this->set_pen_width(0);
     }
     void move(double x, double y)
     {
@@ -132,6 +132,10 @@ public:
     void rdraw(double dx, double dy)
     {
         this->draw(this->x + dx, this->y + dy);
+    }
+    void set_pen_width(double width)
+    {
+        this->add_op("%f w", width);
     }
     void print_text(const std::string &s)
     {
@@ -193,7 +197,23 @@ void process_file(std::istream &ifile, std::ostream &ofile)
         }
             break;
         case 'J': // pen change
-            // FIXME
+        {
+            std::stringstream ss(args);
+            double width = 0.0;
+            int n = 0;
+            ss >> n;
+            switch (n) {
+            case 1:
+                width = 0.2;
+                break;
+            case 2:
+                width = 0.8;
+                break;
+            default:
+                width = 0.0;
+            }
+            pdf.set_pen_width(width);
+        }
             break;
         case 'M': // move
         {
