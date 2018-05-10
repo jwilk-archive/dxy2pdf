@@ -1,0 +1,22 @@
+dist: trusty
+sudo: false
+language: cpp
+compiler:
+- clang
+- gcc
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.9
+    - cppcheck
+script:
+- if [[ $CXX = g++ ]]; then CXX=g++-4.9; fi
+- cppcheck --error-exitcode=1 *.cc
+- make
+- touch test.dxy
+- ./dxy2pdf test.dxy
+- ls -l test.dxy.pdf
+
+# vim:ts=2 sts=2 sw=2 et
