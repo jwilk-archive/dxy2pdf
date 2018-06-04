@@ -14,4 +14,6 @@ all: dxy2pdf
 clean:
 	rm -f dxy2pdf
 
+.error = GNU make is required
+
 # vim:ts=4 sts=4 sw=4 noet
